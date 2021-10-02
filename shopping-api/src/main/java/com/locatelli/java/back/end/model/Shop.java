@@ -12,6 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
+import com.locatelli.java.back.end.dto.ItemDTO;
+import com.locatelli.java.back.end.dto.ShopDTO;
+
 @Entity(name = "shop")
 public class Shop {
 
@@ -25,7 +28,7 @@ public class Shop {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "item",
 	joinColumns = @JoinColumn(name = "shop_id"))
-	private List<Item> items;
+	private List<ItemDTO> items;
 
 	public Long getId() {
 		return id;
@@ -59,14 +62,21 @@ public class Shop {
 		this.date = date;
 	}
 
-	public List<Item> getItems() {
+	public List<ItemDTO> getItems() {
 		return items;
 	}
 
-	public void setItems(List<Item> items) {
+	public void setItems(List<ItemDTO> items) {
 		this.items = items;
 	}
 
-
+	public static Shop convert(ShopDTO shopDTO) {
+		Shop shop = new Shop();
+		shop.setUserIdentifier(shopDTO.getUserIdentifier());
+		shop.setDate(shopDTO.getDate());
+		shop.setTotal(shopDTO.getTotal());
+		shop.setItems(shopDTO.getItems());
+		return shop;
+	}
 
 }

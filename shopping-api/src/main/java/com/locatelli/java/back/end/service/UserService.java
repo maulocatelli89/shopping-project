@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.locatelli.java.back.end.dto.UserDTO;
 import com.locatelli.java.back.end.dto.exception.UserNotFoundException;
@@ -19,13 +18,9 @@ public class UserService {
 	public UserDTO getUserByCpf(String cpf, String key) {
 		try {
 			RestTemplate restTemplate = new RestTemplate();
-			
-			UriComponentsBuilder builder = UriComponentsBuilder
-					.fromHttpUrl(userApiURL + "/user/cpf" + cpf);
-			builder.queryParam("key", key);
-			
+			String url = userApiURL + cpf;
 			ResponseEntity<UserDTO> response =
-					restTemplate.getForEntity(builder.toUriString(), UserDTO.class);
+					restTemplate.getForEntity(url, UserDTO.class);
 
 			return response.getBody();
 		} catch (HttpClientErrorException e) {

@@ -1,7 +1,5 @@
 package com.locatelli.java.back.end.dto;
 
-import com.locatelli.java.back.end.model.Category;
-
 public class CategoryDTO {
 
 	private Long id;
@@ -18,12 +16,5 @@ public class CategoryDTO {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-	
-	public static CategoryDTO convert(Category category) {
-		CategoryDTO categoryDTO = new CategoryDTO();
-		categoryDTO.setId(category.getId());
-		categoryDTO.setNome(category.getNome());
-		return categoryDTO;
 	}
 }

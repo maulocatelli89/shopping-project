@@ -3,8 +3,6 @@ package com.locatelli.java.back.end.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.locatelli.java.back.end.model.Product;
-
 public class ProductDTO {
 
 	@NotBlank
@@ -56,17 +54,5 @@ public class ProductDTO {
 
 	public void setCategoryDTO(CategoryDTO categoryDTO) {
 		this.categoryDTO = categoryDTO;
-	}
-
-	public static ProductDTO convert(Product product) {
-		ProductDTO productDTO = new ProductDTO();
-		productDTO.setNome(product.getNome());
-		productDTO.setDescricao(product.getDescricao());
-		productDTO.setPreco(product.getPreco());
-		productDTO.setProductIdentifier(product.getProductIdentifier());
-		if(product.getCategory() != null) {
-			productDTO.setCategoryDTO(CategoryDTO.convert(product.getCategory()));
-		}
-		return productDTO;
 	}
 }

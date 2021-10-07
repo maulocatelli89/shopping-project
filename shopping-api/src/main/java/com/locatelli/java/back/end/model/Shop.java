@@ -2,6 +2,7 @@ package com.locatelli.java.back.end.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
@@ -28,7 +29,7 @@ public class Shop {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "item",
 	joinColumns = @JoinColumn(name = "shop_id"))
-	private List<ItemDTO> items;
+	private List<Item> items;
 
 	public Long getId() {
 		return id;
@@ -62,11 +63,11 @@ public class Shop {
 		this.date = date;
 	}
 
-	public List<ItemDTO> getItems() {
+	public List<Item> getItems() {
 		return items;
 	}
 
-	public void setItems(List<ItemDTO> items) {
+	public void setItems(List<Item> items) {
 		this.items = items;
 	}
 
@@ -75,7 +76,7 @@ public class Shop {
 		shop.setUserIdentifier(shopDTO.getUserIdentifier());
 		shop.setDate(shopDTO.getDate());
 		shop.setTotal(shopDTO.getTotal());
-		shop.setItems(shopDTO.getItems());
+		shop.setItems(shopDTO.getItems().stream().map(Item::convert).collect(Collectors.toList()));
 		return shop;
 	}
 

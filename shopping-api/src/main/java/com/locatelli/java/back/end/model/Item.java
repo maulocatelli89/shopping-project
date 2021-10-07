@@ -13,12 +13,15 @@ public class Item {
 	public String getProductIdentifier() {
 		return productIdentifier;
 	}
-	public void setProductIdentifier(String productIdentifier) {
-		this.productIdentifier = productIdentifier;
+
+	public void setProductIdentifier(String product) {
+		this.productIdentifier = product;
 	}
+
 	public Float getPrice() {
 		return price;
 	}
+
 	public void setPrice(Float price) {
 		this.price = price;
 	}

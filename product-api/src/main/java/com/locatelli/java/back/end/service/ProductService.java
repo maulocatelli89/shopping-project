@@ -6,20 +6,27 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.locatelli.java.back.end.converter.DTOConverter;
 import com.locatelli.java.back.end.dto.ProductDTO;
+import com.locatelli.java.back.end.dto.exception.CategoryNotFoundException;
+import com.locatelli.java.back.end.exceptions.ProductNotFoundException;
 import com.locatelli.java.back.end.model.Product;
+import com.locatelli.java.back.end.repository.CategoryRepository;
 import com.locatelli.java.back.end.repository.ProductRepository;
 
 public class ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	public List<ProductDTO> getAll(){
 		List<Product> products = productRepository.findAll();
 		return products
 				.stream()
-				.map(ProductDTO::convert)
+				.map(DTOConverter::convert)
 				.collect(Collectors.toList());
 	}
 
@@ -27,21 +34,26 @@ public class ProductService {
 		List<Product> products = productRepository.getProductByCategory(categoryId);
 		return products
 				.stream()
-				.map(ProductDTO::convert)
+				.map(DTOConverter::convert)
 				.collect(Collectors.toList());
 	}
 
 	public ProductDTO findByProductIdentifier(String productIdentifier) {
 		Product product = productRepository.findByProductIdentifier(productIdentifier);
 		if(product != null) {
-			return ProductDTO.convert(product);
+			return DTOConverter.convert(product);
 		}
-		return null;
+		throw new ProductNotFoundException();
 	}
 
 	public ProductDTO save(ProductDTO productDTO) {
+		Boolean existsCategory = categoryRepository
+				.existsById(productDTO.getCategoryDTO().getId());
+		if(!existsCategory) {
+			throw new CategoryNotFoundException();
+		}
 		Product product = productRepository.save(Product.convert(productDTO));
-		return ProductDTO.convert(product);
+		return DTOConverter.convert(product);
 	}
 
 	public ProductDTO delete(Long productId) {
@@ -49,6 +61,6 @@ public class ProductService {
 		if(product.isPresent()) {
 			productRepository.delete(product.get());
 		}
-		return ProductDTO.convert(product.get());
+		throw new ProductNotFoundException();
 	}
 }
